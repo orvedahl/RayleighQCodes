@@ -1,0 +1,69 @@
+
+This project parses the Rayleigh source code to generate a mapping between
+output quantity code and output quantity name.
+
+The mapping only needs to be generated when quantity codes change. This should
+never happen again from the Rayleigh side (according to the developers), but could
+happen quite frequently if custom diagnostics are being used.
+
+To generate the mapping, run the "generate_mapping.py" file and specify the
+directory to parse. The safest choice is to use <RAYLEIGH_DIR>/src/build, but that
+would require Rayleigh to be built/compiled. The calling sequence would look like:
+
+	python generate_mapping.py /path/to/Rayleigh/src/build
+
+If Rayleigh is not built/compiled and you do not need support for files that were
+included using the "--with-custom=<CUSTOM ROOT>" configure option, then you can
+still generate the map using:
+
+	python generate_mapping.py /path/to/Rayleigh/ --default-location
+
+Notice the inclusion of the "--default-location" flag. Under these conditions, the
+code will search for files assuming knowledge of the Rayleigh directory tree.
+
+Both instances will generate a file called "lut_mapping.py" that will be imported into
+the other python source files.
+
+The main file to use will be the "lut.py" file. It contains search functions and lookup
+functions to interact with the data that is now stored in "lut_mapping.py". The three
+most useful functions are described below:
+
+	-parse a single quantity:
+		code, name = parse_quantity(quantity)
+
+		parse_quantity("v_r") will return (1, "v_r")
+		parse_quantity(  1  ) will return (1, "v_r")
+		parse_quantity( "1" ) will return (1, "v_r")
+
+		or use parse_quantities() for multiple quantities
+
+		parse_quantities(["v_r", 2, "3"]) returns [1,2,3], ["v_r","v_theta","v_phi"]
+
+	-extract the LaTeX formula for a quantity code
+		formula = latex_formula(code)
+
+		latex_formula(1) returns r"$v_r$"
+		latex_formula(2) returns r"$v_\theta$"
+
+	-general lookup
+
+		value = lookup(quantity)
+
+		the return value depends on the input value: if a name is given
+		a code is returned, if a code is given a name is returned
+
+		lookup("v_r") returns 1
+		lookup( "1" ) returns "v_r"
+		lookup(  1  ) returns "v_r"
+
+Shortcuts: to access the quantity code for kinetic energy, you would do
+
+	ke_code = lookup('kinetic_energy')
+
+The "lut_shortcuts.py" module allows you do define your own shortcuts that would
+convert the above code into
+
+	ke_code = lookup('ke')
+
+provided you defined the 'ke' shortcut in the "lut_shortcuts.py" file.
+
