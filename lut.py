@@ -23,7 +23,7 @@ def lookup(quantity, __check_shortcuts=True):
         name_given = True
 
     if (code_given):
-        if (code in name_give_code.keys()): # code given, grab name
+        if (code in name_given_code.keys()): # code given, grab name
             return name_given_code[code]
         else:
             return None
@@ -38,7 +38,7 @@ def lookup(quantity, __check_shortcuts=True):
                 return ind
 
         if (name in code_given_name.keys()): # name give, grab code
-            return code_give_name[name]
+            return code_given_name[name]
         else:
             return None
 
@@ -99,13 +99,13 @@ def parse_quantities(quantities):
 
     return codes, names
 
-def find_possible(search_string)
+def find_possible(search_string):
     """
     Search the quantity names for the given string. Return possible codes & names
     """
     codes = []; names = []
     search_string = search_string.lower()
-    for c,n in name_give_code.items():
+    for c,n in name_given_code.items():
 
         if (search_string in n):
             codes.append(c)
