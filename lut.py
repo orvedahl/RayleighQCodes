@@ -29,14 +29,13 @@ def lookup(quantity, __check_shortcuts=True):
             return None
 
     if (name_given):
-        name = name.lower()
-
         if (__check_shortcuts): # check shortcuts first
             ind = shortcut_lookup(name)
 
             if (ind is not None): # found in shortcuts
                 return ind
 
+        name = name.lower()
         if (name in code_given_name.keys()): # name give, grab code
             return code_given_name[name]
         else:
@@ -48,8 +47,6 @@ def shortcut_lookup(name):
     """
     Search the user defined shortcuts for the given quantity name, return the code
     """
-    name = name.lower()
-
     if (name not in shortcuts.keys()):
         return None
 

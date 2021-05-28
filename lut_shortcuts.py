@@ -16,9 +16,24 @@ want to map. Then simply define a dictionary entry with the format:
 
     shortcuts[key] = value
 
-The key can be anything, but must be a lowercase string that is unique
-(prevents overwriting previous definitions). The value must be an
-available quantity name.
+The key can be anything, but must be unique (prevents overwriting previous
+definitions). The value should be an available quantity name.
+
+Best practice:
+    1) use your favorite source to find the quantity code: qcode
+    2) use lookup function to convert qcode into a usable quantity name.
+       This cannot be done from within this file in the source code below,
+       because python will complain about a circular dependency. The best
+       way to perform this function is with the steps:
+           a) change directories to where ever this file lives:
+                  cd /path/to/Rayleigh/post_processing
+           b) start python: python or python3 (will be system dependent)
+           c) from within python, import the lut module:
+                  import lut
+           d) convert your chosen quantity code to a valid name:
+                  qname = lut.lookup(qcode)
+    3) define your shortcut in the source code below:
+           shortcuts['my_first_shortcut_name'] = 'contents_of_variable_qname'
 
 Some common mappings are included in the source code below, they include:
 
