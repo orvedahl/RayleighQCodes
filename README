@@ -1,4 +1,9 @@
 
+The tools in this repo have been incorporated into the main Rayleigh code.
+Therefore, this repo is no longer actively maintained.
+
+
+
 This project parses the Rayleigh source code to generate a mapping between
 output quantity code and output quantity name.
 
